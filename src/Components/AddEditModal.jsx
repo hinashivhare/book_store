@@ -84,7 +84,7 @@ const AddEditModal = (props) => {
                     </Form.Item>
                     <Form.Item>
                         <div className="buttons">
-                            <Button type="primary" onClick={handleOnCancel}>Cancel</Button>
+                            <Button onClick={handleOnCancel}>Cancel</Button>
                             <Button type="primary" htmlType="submit">Submit</Button>
                         </div>
                     </Form.Item>
