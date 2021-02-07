@@ -3,6 +3,9 @@
 
 # Log file
 *.log
+.idea
+node_modules
+.DS_Store
 
 # BlueJ files
 *.ctxt
