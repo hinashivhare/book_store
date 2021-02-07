@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {List, Card, Button, Space} from 'antd';
-import { DeleteBOok} from "../Actions";
-import { DeleteOutlined } from "@ant-design/icons"
+import {List, Card, Button, Space, Typography} from 'antd';
+import {DeleteOutlined} from "@ant-design/icons"
 import AddEditModal from "./AddEditModal";
+import {ReadOutlined} from '@ant-design/icons';
+import DeleteBooks from "./DeleteBooks";
 
 const defaultBookDetails = {
     name: "",
@@ -12,8 +13,11 @@ const defaultBookDetails = {
 };
 const BooksList = (props) => {
     const [visible, setVisible] = useState(false);
+    const [deleteVisible, setDeleteVisible] = useState(false);
+    const [deleteBookDetails, setDeleteBookDetails] = useState(defaultBookDetails);
     const [currentBookDetails, setCurrentBookDetails] = useState(defaultBookDetails);
-    const[isEditable, setIsEditable] = useState(false);
+    const [isEditable, setIsEditable] = useState(false);
+    const {Paragraph, Text} = Typography;
 
     const onEditClickHandle = item => {
         setVisible(true);
@@ -21,36 +25,56 @@ const BooksList = (props) => {
         setCurrentBookDetails(item);
     };
 
+    const onDeleteClickHandle = item => {
+        setDeleteVisible(true);
+        setDeleteBookDetails(item);
+    };
+
     return (
         <div>
-            <Button type="primary" onClick={() => setVisible(true)}>Add Book</Button>
-            <AddEditModal
-                setVisible={setVisible}
-                visible={visible}
-                isEditable={isEditable}
-                setCurrentBookDetails={setCurrentBookDetails}
-                currentBookDetails={currentBookDetails}
-                defaultBookDetails = {defaultBookDetails}
-                setIsEditable={setIsEditable}/>
-            <List
-                grid={{gutter: 16, column: 4}}
-                dataSource={props.booksList}
-                renderItem={item => (
-                    <List.Item>
+            <div className="header">
+                <div>
+                    <ReadOutlined style={{fontSize: "20px"}}/>
+                    <Text className="logo">Book Cellar</Text>
+                </div>
+                <Button size="large" shape="round" type="primary" onClick={() => setVisible(true)}>Add Book</Button>
+            </div>
+            <div className="body">
+                <AddEditModal
+                    setVisible={setVisible}
+                    visible={visible}
+                    isEditable={isEditable}
+                    setCurrentBookDetails={setCurrentBookDetails}
+                    currentBookDetails={currentBookDetails}
+                    defaultBookDetails={defaultBookDetails}
+                    setIsEditable={setIsEditable}
+                />
+                <DeleteBooks
+                    deleteVisible={deleteVisible}
+                    setDeleteVisible={setDeleteVisible}
+                    deleteBookDetails={deleteBookDetails}/>
+                <List
+                    grid={{gutter: 16}}
+                    dataSource={props.booksList}
+                    renderItem={item => (
                         <List.Item>
                             <Space direction="vertical">
-                                <Card onClick={() => onEditClickHandle(item)}  title={item.name}>
+                                <Card className="book_card" onClick={() => onEditClickHandle(item)} title={item.name}>
                                     <div>
-                                        <p>Price: CAD {item.price}</p>
-                                        <p>Category: {item.category}</p>
+                                        <Paragraph>Price: CAD {item.price}</Paragraph>
+                                        <Paragraph ellipsis={{
+                                            rows: 2,
+                                            expandable: false
+                                        }}>Category: {item.category} </Paragraph>
                                     </div>
                                 </Card>
-                                <Button icon={<DeleteOutlined />} onClick={() => props.DeleteBOok(item.id)}>Delete</Button>
+                                <Button danger icon={<DeleteOutlined/>}
+                                        onClick={() => onDeleteClickHandle(item)}>Delete</Button>
                             </Space>
                         </List.Item>
-                    </List.Item>
-                )}
-            />
+                    )}
+                />
+            </div>
         </div>
     );
 };
@@ -61,4 +85,4 @@ const mapStateToProps = state => {
     };
 }
 
-export default connect(mapStateToProps, { DeleteBOok })(BooksList)
+export default connect(mapStateToProps)(BooksList)

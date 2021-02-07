@@ -1,4 +1,29 @@
 .buttons{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+}
+.buttons button {
+    margin-left: 10px;
+}
+.header {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+.header svg {
+    color: #486899;
+}
+.header .logo {
+    font-family: monospace;
+    font-size: 27px;
+    margin-left: 10px;
+}
+.body {
+    padding: 22px;
+}
+.book_card {
+    width: 285px;
+    height: 200px;
+    cursor: pointer;
 }
